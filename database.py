@@ -1,24 +1,30 @@
 import sqlite3
 
 
-con = sqlite3.connect("vocab.db")
-c = con.cursor()
-table_list = [a for a in c.execute(
-    "SELECT name FROM sqlite_master WHERE type = 'table'")]
-print(table_list)
-bookKey = "Crime_and_Punishment:F16273CD"
-selectLookUps = c.execute('SELECT * FROM LOOKUPS WHERE book_key=?', (bookKey,))
+class Database():
+    con = 0
+    selectLookUps = []
 
+    def connectToDatabase(self):
+        self.con = sqlite3.connect("vocab2.db")
+        c = self.con.cursor()
 
-def boldText(word):
-    return "<b>" + word + "</b>"
+        table_list = [a for a in c.execute(
+            "SELECT name FROM sqlite_master WHERE type = 'table'")]
+        bookKey = "Crime_and_Punishment:F16273CD"
 
+        self.selectLookUps = c.execute(
+            'SELECT * FROM LOOKUPS WHERE book_key=?', (bookKey,))
 
-cards = []
-for row in selectLookUps:
-    word = row[1].split(":")[1]
-    usage = row[5].replace(word, boldText(word))
-    cards.append((word, usage))
-    print(cards)
+    def boldText(self, word):
+        return "<b>" + word + "</b>"
 
-con.close()
+    def getData(self):
+        self.connectToDatabase()
+        cards = []
+        for row in self.selectLookUps:
+            word = row[1].split(":")[1]
+            usage = row[5].replace(word, self.boldText(word))
+            cards.append((word, usage))
+        self.con.close()
+        return cards
