@@ -1,6 +1,7 @@
 from database import Database
 from dictionary import Dictionary
 from translator import Translator
+from common import CommonWords 
 import re
 database = Database()
 cards = database.getData()
@@ -10,9 +11,15 @@ dictionary = Dictionary()
 translator = Translator()
 print("Card Count:", len(cards))
 
+commonWords = CommonWords().getCommonWords()
+
 lines = []
 for data in cards:
     word = data[0]
+    if word.lower() in commonWords:
+        print("Common word:", word)
+        continue
+
     usage = data[1]
     definition = dictionary.getDefinition(word)
     translation = translator.getTranslation(word)
