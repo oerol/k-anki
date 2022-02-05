@@ -12,6 +12,7 @@ translator = Translator()
 print("Card Count:", len(cards))
 
 commonWords = CommonWords().getCommonWords()
+currentWords = CommonWords().getCurrentWords()
 
 lines = []
 for data in cards:
@@ -21,10 +22,15 @@ for data in cards:
         continue
 
     usage = data[1]
+
+    if usage in currentWords:
+        print("Current word:", word)
+        continue
     definition = dictionary.getDefinition(word)
     translation = translator.getTranslation(word)
     card = word + "\t" + definition + "\t" + \
         usage + "\t" + translation + "\t \n"
+    
     lines.append(card)
 
 with open('vocab2.txt', 'w', encoding='utf8') as file:
