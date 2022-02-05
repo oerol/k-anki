@@ -22,18 +22,23 @@ dictionary = Dictionary()
 translator = Translator()
 print("Card Count:", len(cards))
 
+commonCounter = 0
+existingCounter = 0
+newCounter = 0
 
 lines = []
 for data in cards:
     word = data[0]
     if word.lower() in commonWords:
         print("Common word:", word)
+        commonCounter += 1
         continue
 
     usage = data[1]
 
     if usage in currentWords:
         print("Existing usage:", word)
+        existingCounter += 1
         continue
 
     occurence = [card for card in currentCards if card[0] == word]
@@ -45,6 +50,7 @@ for data in cards:
     else:
         definition = dictionary.getDefinition(word)
         translation = translator.getTranslation(word)
+        newCounter += 1
     card = word + "\t" + definition + "\t" + \
         usage + "\t" + translation + "\t \n"
 
@@ -59,3 +65,6 @@ with open('output/vocab.txt', 'w', encoding='utf8') as file:
         file.write(line)
 
 shutil.copy("output/vocab.txt", "anki.txt")
+print("Common words:", commonCounter)
+print("Existing words:", existingCounter)
+print("New words:", newCounter)

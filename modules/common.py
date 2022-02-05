@@ -10,7 +10,7 @@ class CommonWords():
     all = []
 
     def getCommonWords(self):
-        with open('common.txt', 'r') as file:
+        with open('common.txt', 'r', encoding='utf-8') as file:
             page = file.readlines()
             for line in page:
                 if '#' not in line:
@@ -18,7 +18,7 @@ class CommonWords():
             return self.common
 
     def getCurrentWords(self):
-        with open('anki.txt', 'r') as file:
+        with open('anki.txt', 'r', encoding='utf-8') as file:
             page = file.readlines()
             for line in page:
                 self.current.append(line.split("\t")[2])
@@ -29,7 +29,6 @@ class CommonWords():
 
 # commonWords = CommonWords().getCommonWords()
 # print(CommonWords().getCurrentWords())
-
 
     def getVocabFile(self):
         drives = [chr(x) + ":" for x in range(65, 91)
