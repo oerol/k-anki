@@ -11,7 +11,7 @@ class Dictionary():
         response = json.loads(request.text)
         try:
             definition = response[0]["shortdef"][0]
-        except TypeError:
+        except (TypeError, IndexError) as e:
             definition = ""
-            print("Skipped: ", word)
+            print("Skipped:", word)
         return definition
