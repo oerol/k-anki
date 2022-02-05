@@ -5,8 +5,16 @@ class Database():
     con = 0
     selectLookUps = []
 
-    def connectToDatabase(self):
-        self.con = sqlite3.connect("vocab2.db")
+    def connectToDatabase(self, vocabFile):
+        if vocabFile != None:
+            self.con = sqlite3.connect(vocabFile)
+        else:
+            try:
+                print("Using local vocab.db file!")
+                self.con = sqlite3.connect("vocab.db")
+            except:
+                print("Couldn't find local vocab.db file..")
+
         c = self.con.cursor()
 
         table_list = [a for a in c.execute(
@@ -19,8 +27,8 @@ class Database():
     def boldText(self, word):
         return "<b>" + word + "</b>"
 
-    def getData(self):
-        self.connectToDatabase()
+    def getData(self, vocabFile):
+        self.connectToDatabase(vocabFile)
         cards = []
         for row in self.selectLookUps:
             word = row[1].split(":")[1]

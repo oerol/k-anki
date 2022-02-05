@@ -1,18 +1,21 @@
-from database import Database
-from dictionary import Dictionary
-from translator import Translator
-from common import CommonWords 
+from modules.database import Database
+from modules.dictionary import Dictionary
+from modules.translator import Translator
+from modules.common import CommonWords
 import re
+from pathlib import Path
+
+commonWords = CommonWords().getCommonWords()
+currentWords = CommonWords().getCurrentWords()
+
 database = Database()
-cards = database.getData()
+cards = database.getData(CommonWords().getVocabFile())
 
 dictionary = Dictionary()
 
 translator = Translator()
 print("Card Count:", len(cards))
 
-commonWords = CommonWords().getCommonWords()
-currentWords = CommonWords().getCurrentWords()
 
 lines = []
 for data in cards:
@@ -30,7 +33,7 @@ for data in cards:
     translation = translator.getTranslation(word)
     card = word + "\t" + definition + "\t" + \
         usage + "\t" + translation + "\t \n"
-    
+
     lines.append(card)
 
 with open('vocab2.txt', 'w', encoding='utf8') as file:
@@ -38,3 +41,5 @@ with open('vocab2.txt', 'w', encoding='utf8') as file:
         line = re.sub(u'[\u201c\u201d]', '"', line)
         line = re.sub(r"’", "'", line)
         file.write(line)
+
+Path("output").mkdir(parents=True, exist_ok=True)
