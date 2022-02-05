@@ -7,6 +7,8 @@ class CommonWords():
     common = []
     current = []
 
+    all = []
+
     def getCommonWords(self):
         with open('common.txt', 'r') as file:
             page = file.readlines()
@@ -20,12 +22,14 @@ class CommonWords():
             page = file.readlines()
             for line in page:
                 self.current.append(line.split("\t")[2])
+                self.all.append(line.split("\t"))
 
             return self.current
 
 
 # commonWords = CommonWords().getCommonWords()
 # print(CommonWords().getCurrentWords())
+
 
     def getVocabFile(self):
         drives = [chr(x) + ":" for x in range(65, 91)
