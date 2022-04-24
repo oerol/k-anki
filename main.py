@@ -1,70 +1,64 @@
-import shutil
-from modules.database import Database
-from modules.dictionary import Dictionary
-from modules.translator import Translator
-from modules.common import CommonWords
+from modules.data import getLookUps
+from modules.details import getDefinition, getTranslation
+from modules.filter import getExistingWords, getCommonWords
 import re
-from pathlib import Path
+from time import sleep
+cards = getLookUps()
+print(f"{len(cards)} cards found!\n")
 
-wordHelper = CommonWords()
-
-commonWords = wordHelper.getCommonWords()
-currentWords = wordHelper.getCurrentWords()
-
-currentCards = wordHelper.all
-
-database = Database()
-cards = database.getData(wordHelper.getVocabFile())
-
-
-dictionary = Dictionary()
-
-translator = Translator()
-print("Card Count:", len(cards))
+commonWords = getCommonWords()
+existingWords = getExistingWords()
+duplicateWords = []
 
 commonCounter = 0
 existingCounter = 0
 newCounter = 0
+duplicateCounter = 0
 
 lines = []
+
 for data in cards:
     word = data[0]
+    usage = data[1]
+
+    if word in existingWords:
+        print("Existing word:", word)
+        existingCounter += 1
+        continue
+
     if word.lower() in commonWords:
         print("Common word:", word)
         commonCounter += 1
         continue
 
-    usage = data[1]
-
-    if usage in currentWords:
-        print("Existing usage:", word)
-        existingCounter += 1
+    if word in duplicateWords:
+        print("Duplicated word:", word)
+        duplicateCounter += 1
         continue
 
-    occurence = [card for card in currentCards if card[0] == word]
+    definition = getDefinition(word)
+    translation = getTranslation(word)
 
-    if len(occurence) > 0:
-        print("Existing word:", word)
-        definition = occurence[0][1]
-        translation = occurence[0][3]
-    else:
-        definition = dictionary.getDefinition(word)
-        translation = translator.getTranslation(word)
-        newCounter += 1
+    if translation == word:  # should be moved to the method
+        translation = ""
+
+    newCounter += 1
+
     card = word + "\t" + definition + "\t" + \
-        usage + "\t" + translation + "\t \n"
+        usage + "\t" + translation + "\n"
 
+    duplicateWords.append(word)
     lines.append(card)
 
-Path("output").mkdir(parents=True, exist_ok=True)
 
-with open('output/vocab.txt', 'w', encoding='utf8') as file:
+with open("anki.txt", "a", encoding='utf8') as file:
     for line in lines:
         line = re.sub(u'[\u201c\u201d]', '"', line)
         line = re.sub(r"’", "'", line)
         file.write(line)
 
-shutil.copy("output/vocab.txt", "anki.txt")
+print("\n*** RESULTS:")
 print("Common words:", commonCounter)
 print("Existing words:", existingCounter)
+print("Duplicated words:", duplicateCounter)
 print("New words:", newCounter)
