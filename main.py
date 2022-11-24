@@ -1,10 +1,11 @@
+import re
+
 from modules.data import getLookUps
 from modules.details import getDefinition, getTranslation
 from modules.filter import getExistingWords, getCommonWords
-import re
-from time import sleep
-cards = getLookUps()
-print(f"{len(cards)} cards found!\n")
+
+look_ups = getLookUps()
+print(f"{len(look_ups)} look ups found!\n")
 
 commonWords = getCommonWords()
 existingWords = getExistingWords()
@@ -17,7 +18,7 @@ duplicateCounter = 0
 
 lines = []
 
-for data in cards:
+for data in look_ups:
     word = data[0]
     usage = data[1]
 
