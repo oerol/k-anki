@@ -2,18 +2,18 @@ import re
 
 from modules.data import get_words
 from modules.details import get_definition_for_word, get_translation_for_word
-from modules.filter import getExistingWords, getCommonWords
+from modules.filter import get_existing_words, get_common_words
 
 look_ups = get_words()
 
-commonWords = getCommonWords()
-existingWords = getExistingWords()
-duplicateWords = []
+common_words = get_common_words()
+existing_words = get_existing_words()
+duplicate_words = []
 
-commonCounter = 0
-existingCounter = 0
-newCounter = 0
-duplicateCounter = 0
+common_counter = 0
+existing_counter = 0
+new_counter = 0
+duplicate_counter = 0
 
 lines = []
 
@@ -21,19 +21,19 @@ for data in look_ups:
     word = data[0]
     usage = data[1]
 
-    if word in existingWords:
+    if word in existing_words:
         print("[k-anki] Existing word:", word)
-        existingCounter += 1
+        existing_counter += 1
         continue
 
-    if word.lower() in commonWords:
+    if word.lower() in common_words:
         print("[k-anki] Common word:", word)
-        commonCounter += 1
+        common_counter += 1
         continue
 
-    if word in duplicateWords:
+    if word in duplicate_words:
         print("[k-anki] Duplicated word:", word)
-        duplicateCounter += 1
+        duplicate_counter += 1
         continue
 
     print(f"[k-anki] {word}")
@@ -44,12 +44,12 @@ for data in look_ups:
     if translation == word:  # should be moved to the method
         translation = ""
 
-    newCounter += 1
+    new_counter += 1
 
     card = word + "\t" + definition + "\t" + \
         usage + "\t" + translation + "\n"
 
-    duplicateWords.append(word)
+    duplicate_words.append(word)
     lines.append(card)
 
 if __name__ == "__main__":
@@ -60,7 +60,7 @@ if __name__ == "__main__":
             file.write(line)
 
 print("\n[k-anki] Results:")
-print("> Common words:", commonCounter)
-print("> Existing words:", existingCounter)
-print("> Duplicated words:", duplicateCounter)
-print("> New words:", newCounter)
+print("> Common words:", common_counter)
+print("> Existing words:", existing_counter)
+print("> Duplicated words:", duplicate_counter)
+print("> New words:", new_counter)
