@@ -50,12 +50,12 @@ for data in cards:
     duplicateWords.append(word)
     lines.append(card)
 
-
-with open("anki.txt", "a", encoding='utf8') as file:
-    for line in lines:
-        line = re.sub(u'[\u201c\u201d]', '"', line)
-        line = re.sub(r"’", "'", line)
-        file.write(line)
+if __name__ == "__main__":
+    with open("anki.txt", "a", encoding='utf8') as file:
+        for line in lines:
+            line = re.sub(u'[\u201c\u201d]', '"', line)
+            line = re.sub(r"’", "'", line)
+            file.write(line)
 
 print("\n*** RESULTS:")
 print("Common words:", commonCounter)
