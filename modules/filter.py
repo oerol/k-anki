@@ -1,10 +1,11 @@
-
 from pathlib import Path
+
+common_words_file_path = "assets/common-words.txt"
 
 
 def getCommonWords():
     common = []
-    with open('common.txt', 'r', encoding='utf-8') as file:
+    with open(common_words_file_path, 'r', encoding='utf-8') as file:
         page = file.readlines()
         for line in page:
             if '#' not in line:
