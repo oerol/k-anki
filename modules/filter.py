@@ -15,8 +15,9 @@ def getCommonWords():
 
 def getExistingWords():
     existing = []
-    if Path("./anki.txt").is_file():
-        with open('anki.txt', 'r', encoding='utf-8') as file:
+    existing_anki_output_path = "output/anki.txt"
+    if Path(existing_anki_output_path).is_file():
+        with open(existing_anki_output_path, 'r', encoding='utf-8') as file:
             page = file.readlines()
             for line in page:
                 existing.append(line.split("\t")[0])

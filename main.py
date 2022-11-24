@@ -53,7 +53,7 @@ for data in look_ups:
     lines.append(card)
 
 if __name__ == "__main__":
-    with open("anki.txt", "a", encoding='utf8') as file:
+    with open("output/anki.txt", "a", encoding='utf8') as file:
         for line in lines:
             line = re.sub(u'[\u201c\u201d]', '"', line)
             line = re.sub(r"’", "'", line)
