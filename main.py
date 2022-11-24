@@ -1,7 +1,7 @@
 import re
 
 from modules.data import get_words
-from modules.details import getDefinition, getTranslation
+from modules.details import get_definition_for_word, get_translation_for_word
 from modules.filter import getExistingWords, getCommonWords
 
 look_ups = get_words()
@@ -22,22 +22,24 @@ for data in look_ups:
     usage = data[1]
 
     if word in existingWords:
-        print("Existing word:", word)
+        print("[k-anki] Existing word:", word)
         existingCounter += 1
         continue
 
     if word.lower() in commonWords:
-        print("Common word:", word)
+        print("[k-anki] Common word:", word)
         commonCounter += 1
         continue
 
     if word in duplicateWords:
-        print("Duplicated word:", word)
+        print("[k-anki] Duplicated word:", word)
         duplicateCounter += 1
         continue
 
-    definition = getDefinition(word)
-    translation = getTranslation(word)
+    print(f"[k-anki] {word}")
+
+    definition = get_definition_for_word(word)
+    translation = get_translation_for_word(word)
 
     if translation == word:  # should be moved to the method
         translation = ""
@@ -57,8 +59,8 @@ if __name__ == "__main__":
             line = re.sub(r"’", "'", line)
             file.write(line)
 
-print("\n*** RESULTS:")
-print("Common words:", commonCounter)
-print("Existing words:", existingCounter)
-print("Duplicated words:", duplicateCounter)
-print("New words:", newCounter)
+print("\n[k-anki] Results:")
+print("> Common words:", commonCounter)
+print("> Existing words:", existingCounter)
+print("> Duplicated words:", duplicateCounter)
+print("> New words:", newCounter)
