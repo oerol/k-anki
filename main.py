@@ -1,10 +1,10 @@
 import re
 
-from modules.data import getLookUps
+from modules.data import get_words
 from modules.details import getDefinition, getTranslation
 from modules.filter import getExistingWords, getCommonWords
 
-look_ups = getLookUps()
+look_ups = get_words()
 print(f"{len(look_ups)} look ups found!\n")
 
 commonWords = getCommonWords()
