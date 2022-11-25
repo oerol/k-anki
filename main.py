@@ -3,6 +3,7 @@ import re
 from modules.data import get_words
 from modules.details import get_definition_for_word, get_translation_for_word
 from modules.filter import get_existing_words, get_common_words
+from modules.generate import generate_apkg
 
 print("[k-anki] Starting Program!")
 
@@ -48,18 +49,13 @@ for data in look_ups:
 
     new_counter += 1
 
-    card = word + "\t" + definition + "\t" + \
-        usage + "\t" + translation + "\n"
+    card = [word, definition, usage, translation]
 
     duplicate_words.append(word)
     lines.append(card)
 
 if __name__ == "__main__":
-    with open("output/anki.txt", "a", encoding='utf8') as file:
-        for line in lines:
-            line = re.sub(u'[\u201c\u201d]', '"', line)
-            line = re.sub(r"’", "'", line)
-            file.write(line)
+    generate_apkg(lines)
 
 print("\n[k-anki] Results:")
 print("> Common words:", common_counter)
