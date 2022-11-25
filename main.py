@@ -4,6 +4,8 @@ from modules.data import get_words
 from modules.details import get_definition_for_word, get_translation_for_word
 from modules.filter import get_existing_words, get_common_words
 
+print("[k-anki] Starting Program!")
+
 look_ups = get_words()
 
 common_words = get_common_words()

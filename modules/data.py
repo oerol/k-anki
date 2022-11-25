@@ -104,5 +104,5 @@ def get_words():
         cards.append(card)
     con.close()
 
-    print(f"[k-anki] {len(cards)} words found!\n")
+    print(f"\n[k-anki] {len(cards)} words found!")
     return cards
