@@ -1,9 +1,25 @@
 import re
-
+import json
 from modules.data import get_words
 from modules.details import get_definition_for_word, get_translation_for_word
 from modules.filter import get_existing_words, get_common_words
 from modules.generate import generate_apkg
+
+
+def write_copy_to_json(cards):
+    cards_json = {}
+    for card in cards:
+        word = card[0]
+        definition = card[1]
+        usage = card[2]
+        translation = card[3]
+
+        card_data = {word}
+        cards_json[word] = {"definition": definition, "usage": usage, "translation": translation}
+    json_data = json.dumps(cards_json)
+
+    with open('output/anki.json', 'w', encoding='utf-8') as f:
+        json.dump(cards_json, f, indent=4)
 
 
 if __name__ == "__main__":
@@ -55,7 +71,8 @@ if __name__ == "__main__":
 
         duplicate_words.append(word)
         lines.append(card)
-        generate_apkg(lines)
+    write_copy_to_json(lines)
+    generate_apkg(lines)
 
 print("\n[k-anki] Results:")
 print("> Common words:", common_counter)
