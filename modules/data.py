@@ -76,7 +76,6 @@ def style_card(card):
     usage = card[1]
 
     usage = usage.replace(word, "<u>" + word + "</u>")
-    print(usage)
     return (word, usage)
 
 
