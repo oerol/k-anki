@@ -15,9 +15,8 @@ def get_common_words():
         return common
 
 
-def get_existing_words():
+def get_existing_cards():
     if Path(existing_anki_output_path).is_file():
         with open(existing_anki_output_path) as json_file:
-            data = json.load(json_file)
-            words = data.keys()
+            words = json.load(json_file)
             return words

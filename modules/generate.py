@@ -34,8 +34,9 @@ def generate_apkg(cards):
         2059400111,
         'k-anki')  # Deck name
 
-    for card in cards:
-        anki_note = genanki.Note(model=anki_model, fields=card)
+    for word in cards:
+        anki_note = genanki.Note(model=anki_model, fields=[
+                                 word, cards[word]["definition"], cards[word]["usage"], cards[word]["translation"]])
         anki_deck.add_note(anki_note)
 
     genanki.Package(anki_deck).write_to_file('output.apkg')

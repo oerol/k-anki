@@ -2,17 +2,17 @@ import re
 import json
 from modules.data import get_words
 from modules.details import get_definition_for_word, get_translation_for_word
-from modules.filter import get_existing_words, get_common_words
+from modules.filter import get_existing_cards, get_common_words
 from modules.generate import generate_apkg
 
 
 def write_copy_to_json(cards):
     cards_json = {}
     for card in cards:
-        word = card[0]
-        definition = card[1]
-        usage = card[2]
-        translation = card[3]
+        word = card
+        definition = cards[card]["definition"]
+        usage = cards[card]["usage"]
+        translation = cards[card]["translation"]
 
         cards_json[word] = {"definition": definition, "usage": usage, "translation": translation}
 
@@ -26,7 +26,8 @@ if __name__ == "__main__":
     look_ups = get_words()
 
     common_words = get_common_words()
-    existing_words = get_existing_words()
+    existing_cards = get_existing_cards()
+    existing_words = existing_cards.keys()
     duplicate_words = []
 
     common_counter = 0
@@ -34,7 +35,7 @@ if __name__ == "__main__":
     new_counter = 0
     duplicate_counter = 0
 
-    lines = []
+    lines = {}
 
     for data in look_ups:
         word = data[0]
@@ -65,12 +66,10 @@ if __name__ == "__main__":
 
         new_counter += 1
 
-        card = [word, definition, usage, translation]
-
         duplicate_words.append(word)
-        lines.append(card)
-    write_copy_to_json(lines)
-    generate_apkg(lines)
+        lines[word] = {"definition": definition, "usage": usage, "translation": translation}
+    write_copy_to_json(existing_cards | lines)
+    generate_apkg(existing_cards | lines)
 
 print("\n[k-anki] Results:")
 print("> Common words:", common_counter)
