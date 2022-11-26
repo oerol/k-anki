@@ -1,4 +1,3 @@
-import re
 import json
 from modules.data import get_words
 from modules.details import get_definition_for_word, get_translation_for_word
@@ -68,11 +67,15 @@ if __name__ == "__main__":
 
         duplicate_words.append(word)
         lines[word] = {"definition": definition, "usage": usage, "translation": translation}
-    write_copy_to_json(existing_cards | lines)
-    generate_apkg(existing_cards | lines)
 
-print("\n[k-anki] Results:")
-print("> Common words:", common_counter)
-print("> Existing words:", existing_counter)
-print("> Duplicated words:", duplicate_counter)
-print("> New words:", new_counter)
+    print("\n[k-anki] Results:")
+    print("> Common words:", common_counter)
+    print("> Existing words:", existing_counter)
+    print("> Duplicated words:", duplicate_counter)
+    print("> New words:", new_counter)
+
+    print("\n[k-anki] Writing cache file to output/anki.json.")
+    write_copy_to_json(existing_cards | lines)
+    print("[k-anki] Writing output file to output.apkg.")
+    generate_apkg(existing_cards | lines)
+    print("[k-anki] Done!")
