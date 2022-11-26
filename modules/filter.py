@@ -1,6 +1,8 @@
+import json
 from pathlib import Path
 
 common_words_file_path = "assets/common-words.txt"
+existing_anki_output_path = "output/anki.json"
 
 
 def get_common_words():
@@ -14,11 +16,8 @@ def get_common_words():
 
 
 def get_existing_words():
-    existing = []
-    existing_anki_output_path = "output/anki.txt"
     if Path(existing_anki_output_path).is_file():
-        with open(existing_anki_output_path, 'r', encoding='utf-8') as file:
-            page = file.readlines()
-            for line in page:
-                existing.append(line.split("\t")[0])
-    return existing
+        with open(existing_anki_output_path) as json_file:
+            data = json.load(json_file)
+            words = data.keys()
+            return words
