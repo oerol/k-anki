@@ -26,7 +26,11 @@ if __name__ == "__main__":
 
     common_words = get_common_words()
     existing_cards = get_existing_cards()
-    existing_words = existing_cards.keys()
+    if existing_cards != None:
+        existing_words = existing_cards.keys()
+    else:
+        existing_cards = {}
+        existing_words = []
     duplicate_words = []
 
     common_counter = 0

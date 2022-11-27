@@ -13,6 +13,9 @@ with open(settings_file_path) as json_file:
 
 
 def get_definition_for_word(word):
+    if merriam_webster_api_key == "":
+        return ""
+
     request = requests.get(
         f"https://dictionaryapi.com/api/v3/references/collegiate/json/{word}?key={merriam_webster_api_key}")
 
@@ -28,6 +31,9 @@ def get_definition_for_word(word):
 
 
 def get_translation_for_word(word):
+    if deepl_api_key == "":
+        return ""
+
     request = requests.get(
         "https://api-free.deepl.com/v2/translate",
         params={
