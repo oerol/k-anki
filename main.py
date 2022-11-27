@@ -13,7 +13,7 @@ def write_copy_to_json(cards):
         usage = cards[card]["usage"]
         translation = cards[card]["translation"]
 
-        cards_json[word] = {"definition": definition, "usage": usage, "translation": translation}
+        cards_json[word] = {"definition": definition, "translation": translation, "usage": usage}
 
     with open('output/anki.json', 'w', encoding='utf-8') as f:
         json.dump(cards_json, f, indent=4)
