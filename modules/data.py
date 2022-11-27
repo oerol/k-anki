@@ -59,14 +59,17 @@ def selected_book_index(cursor):
         "SELECT book_key, COUNT(book_key) FROM LOOKUPS GROUP BY book_key HAVING COUNT(book_key) > 1 ORDER BY COUNT(book_key) desc")
 
     print("\nBooks:")
-    for x, row in enumerate(books):
+    for index, row in enumerate(books):
         book_keys.append(row[0])
         book_name = row[0].split(":")[0].replace("_", " ")
-        print(f"{x + 1}. {book_name} with {row[1]} words")
+        print(f"{index + 1}. {book_name} with {row[1]} words")
 
-    selected_book = (
-        int(input("\nEnter the corresponding number left from the book: ")) - 1
-    )
+    selected_book = input("\nEnter the corresponding number left from the book or leave blank to select all books: ")
+
+    if selected_book == "":
+        selected_book = -1
+    else:
+        selected_book = int(selected_book) - 1
 
     return selected_book
 
@@ -91,7 +94,10 @@ def get_words():
     cursor = con.cursor()
 
     book_index = selected_book_index(cursor)
-    kindle_look_ups = cursor.execute("SELECT * FROM LOOKUPS WHERE book_key=?", [book_keys[book_index]])
+    if book_index == -1:
+        kindle_look_ups = cursor.execute("SELECT * FROM LOOKUPS")
+    else:
+        kindle_look_ups = cursor.execute("SELECT * FROM LOOKUPS WHERE book_key=?", [book_keys[book_index]])
 
     cards = []
     for row in kindle_look_ups:
