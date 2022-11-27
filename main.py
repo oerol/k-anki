@@ -3,6 +3,9 @@ from modules.data import get_words
 from modules.details import get_definition_for_word, get_translation_for_word
 from modules.filter import get_existing_cards, get_common_words
 from modules.generate import generate_apkg
+from pathlib import Path
+
+cache_directory_path = "./cache"
 
 
 def write_copy_to_json(cards):
@@ -15,7 +18,8 @@ def write_copy_to_json(cards):
 
         cards_json[word] = {"definition": definition, "translation": translation, "usage": usage}
 
-    with open('output/anki.json', 'w', encoding='utf-8') as f:
+    Path(cache_directory_path).mkdir(exist_ok=True)
+    with open(cache_directory_path + '/anki.json', 'w', encoding='utf-8') as f:
         json.dump(cards_json, f, indent=4)
 
 
@@ -78,7 +82,7 @@ if __name__ == "__main__":
     print("> Duplicated words:", duplicate_counter)
     print("> New words:", new_counter)
 
-    print("\n[k-anki] Writing cache file to output/anki.json.")
+    print("\n[k-anki] Writing cache file to cache/anki.json.")
     write_copy_to_json(existing_cards | lines)
     print("[k-anki] Writing output file to output.apkg.")
     generate_apkg(existing_cards | lines)

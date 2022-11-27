@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 common_words_file_path = "assets/common-words.txt"
-existing_anki_output_path = "output/anki.json"
+existing_anki_output_path = "cache/anki.json"
 
 
 def get_common_words():
