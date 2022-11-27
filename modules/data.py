@@ -58,18 +58,29 @@ def selected_book_index(cursor):
     books = cursor.execute(
         "SELECT book_key, COUNT(book_key) FROM LOOKUPS GROUP BY book_key HAVING COUNT(book_key) > 1 ORDER BY COUNT(book_key) desc")
 
+    number_of_books = 0
     print("\nBooks:")
     for index, row in enumerate(books):
+        number_of_books += 1
+
         book_keys.append(row[0])
         book_name = row[0].split(":")[0].replace("_", " ")
         print(f"{index + 1}. {book_name} with {row[1]} words")
 
-    selected_book = input("\nEnter the corresponding number left from the book or leave blank to select all books: ")
+    first_input_text = "\nEnter the corresponding number left from the book or leave blank to select all books: "
+    subsequent_input_text = f"Please enter a number between 1 and {number_of_books} (or leave empty to select all books): "
 
-    if selected_book == "":
-        selected_book = -1
-    else:
-        selected_book = int(selected_book) - 1
+    selected_book = -1
+    while selected_book < 0 or selected_book > number_of_books - 1:
+        if selected_book == -1:
+            selected_book_input = input(first_input_text)
+        else:
+            selected_book_input = input(subsequent_input_text)
+
+        if selected_book_input == "":
+            return -1
+        else:
+            selected_book = int(selected_book_input) - 1
 
     return selected_book
 
