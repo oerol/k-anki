@@ -35,7 +35,7 @@ After you're done, make sure to copy your API key from [Merriam-Webster](https:/
 
 ## Features
 
-- Detecs connected Kindle devicdes automatically
+- Detecs connected Kindle devices automatically
 - Filters out common words that you may have added to your flashcards like "the" or "and"
 - Includes the passage of the book where the flashcard was first recorded
 - Supports adding translation and definitions to words
