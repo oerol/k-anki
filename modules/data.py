@@ -25,6 +25,7 @@ kindle_vocab_file_path = ""
 
 
 def kindle_has_vocab_file():
+    global kindle_vocab_file_path
     kindle_vocab_file_path = kindle_drive + "\\system\\vocabulary\\vocab.db"
     vocabFile = Path(kindle_vocab_file_path)
 
@@ -58,6 +59,7 @@ settings_file_path = "settings.json"
 
 
 def selected_book_index(cursor):
+    print(cursor)
     books = cursor.execute(
         "SELECT book_key, COUNT(book_key) FROM LOOKUPS GROUP BY book_key HAVING COUNT(book_key) > 1 ORDER BY COUNT(book_key) desc")
 
@@ -112,6 +114,7 @@ def style_card(card):
 
 def get_words():
     if kindle_is_connected() and kindle_has_vocab_file():
+        print(kindle_vocab_file_path)
         con = sqlite3.connect(kindle_vocab_file_path)
     else:
         if has_local_vocab_file():
