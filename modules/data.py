@@ -3,6 +3,7 @@ import win32api
 import os
 from pathlib import Path
 import sys
+import json
 
 kindle_drive = ""
 
@@ -53,12 +54,18 @@ def has_local_vocab_file():
 
 book_keys = []
 
+settings_file_path = "settings.json"
+
 
 def selected_book_index(cursor):
     books = cursor.execute(
         "SELECT book_key, COUNT(book_key) FROM LOOKUPS GROUP BY book_key HAVING COUNT(book_key) > 1 ORDER BY COUNT(book_key) desc")
 
     number_of_books = 0
+
+    first_input_text = "\nEnter the corresponding number left from the book or leave blank to select all books: "
+    subsequent_input_text = f"Please enter a number between 1 and {number_of_books} (or leave empty to select all books): "
+
     print("\nBooks:")
     for index, row in enumerate(books):
         number_of_books += 1
@@ -67,8 +74,18 @@ def selected_book_index(cursor):
         book_name = row[0].split(":")[0].replace("_", " ")
         print(f"{index + 1}. {book_name} with {row[1]} words")
 
-    first_input_text = "\nEnter the corresponding number left from the book or leave blank to select all books: "
-    subsequent_input_text = f"Please enter a number between 1 and {number_of_books} (or leave empty to select all books): "
+    with open(settings_file_path) as json_file:
+        settings = json.load(json_file)
+        mode = settings["mode"]
+
+        if mode == "auto":
+            selected_book_input = settings["auto-book-setting"]
+            print(first_input_text + selected_book_input)
+
+            if selected_book_input == "":
+                return -1
+            else:
+                return int(selected_book_input) - 1
 
     selected_book = -1
     while selected_book < 0 or selected_book > number_of_books - 1:
