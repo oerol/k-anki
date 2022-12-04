@@ -59,9 +59,8 @@ settings_file_path = "settings.json"
 
 
 def selected_book_index(cursor):
-    print(cursor)
     books = cursor.execute(
-        "SELECT book_key, COUNT(book_key) FROM LOOKUPS GROUP BY book_key HAVING COUNT(book_key) > 1 ORDER BY COUNT(book_key) desc")
+        "SELECT book_key, COUNT(book_key) FROM LOOKUPS GROUP BY book_key HAVING COUNT(book_key) > 1 ORDER BY COUNT(book_key) desc").fetchall()
 
     number_of_books = 0
 
@@ -73,8 +72,9 @@ def selected_book_index(cursor):
         number_of_books += 1
 
         book_keys.append(row[0])
-        book_name = row[0].split(":")[0].replace("_", " ")
-        print(f"{index + 1}. {book_name} with {row[1]} words")
+        book_title = cursor.execute("SELECT title FROM BOOK_INFO WHERE id=?", [row[0]]).fetchone()[0]
+
+        print(f"{index + 1}. '{book_title}' with {row[1]} words")
 
     with open(settings_file_path) as json_file:
         settings = json.load(json_file)
@@ -114,7 +114,6 @@ def style_card(card):
 
 def get_words():
     if kindle_is_connected() and kindle_has_vocab_file():
-        print(kindle_vocab_file_path)
         con = sqlite3.connect(kindle_vocab_file_path)
     else:
         if has_local_vocab_file():
