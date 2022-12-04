@@ -1,8 +1,11 @@
 <div align="center">
 
 # k-anki: Import your Kindle flashcards to Anki
-
+![image](https://user-images.githubusercontent.com/74826613/204369691-743b245a-20b7-4aa9-a9f4-713d72c90cfe.png)
 </div>
+
+
+
 
 ## Prerequisites
 
